@@ -15,7 +15,6 @@ from pydantic import BaseModel, Field
 from contextlib import asynccontextmanager
 from database.init_db import create_tables
 
-
 from pypdf import PdfReader
 from docx import Document
 from reportlab.pdfgen import canvas
@@ -44,9 +43,6 @@ from ai.formatter import clean_reply, auto_title
 
 
 # ── App setup ────────────────────────────────────────────────
-app = FastAPI(title="Aurelius API", version="2.4.0")
-app.include_router(auth_router)
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
@@ -56,12 +52,15 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title="Aurelius API", version="2.4.0", lifespan=lifespan)
+app.include_router(auth_router)
 
 ALLOWED_ORIGINS = [
-    os.getenv("FRONTEND_ORIGIN", "http://localhost:5500"),
+    os.getenv("FRONTEND_ORIGIN", "https://aurelius-ai-frontend.vercel.app"),
+    os.getenv("FRONTEND_URL", "https://aurelius-ai-frontend.vercel.app"),
+    "https://aurelius-ai-frontend.vercel.app",
+    "https://aurelius-ai.vercel.app",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "https://aurelius-ai.vercel.app",
 ]
 
 app.add_middleware(
@@ -226,7 +225,6 @@ def _stream_with_artifacts(
     background_tasks: BackgroundTasks,
     attachment: dict | None = None
 ):
-    # كشف لغة آخر رسالة للمستخدم لعرض رسالة التحميل بنفس لغته
     last_user_msg = history[-1][2] if history else ""
     clean_user_text = re.sub(r"!\[[^\]]*\]\(data:image/[^)]+\)", "", str(last_user_msg))
     is_arabic_user = bool(re.search(r"[\u0600-\u06FF]", clean_user_text))
@@ -239,7 +237,6 @@ def _stream_with_artifacts(
                 full_reply += chunk
                 buffer_text += chunk
 
-                # 1. اعتراض أمر إنشاء/تعديل صورة وعرضها في الشات مباشرة بدون فتح الـ Side Bar
                 img_match = re.search(r"\[\[IMAGE_EDIT:\s*(.*?)\]\]", buffer_text, re.DOTALL)
                 if img_match:
                     prompt_desc = img_match.group(1).strip()
@@ -270,7 +267,6 @@ def _stream_with_artifacts(
                     buffer_text = buffer_text[img_match.end():]
                     continue
 
-                # إرسال النص العادي طالما مفيش تاج مفتوح
                 if "[[" not in buffer_text:
                     yield f"data: {json.dumps({'chunk': buffer_text})}\n\n"
                     buffer_text = ""
@@ -278,7 +274,6 @@ def _stream_with_artifacts(
             if buffer_text:
                 yield f"data: {json.dumps({'chunk': buffer_text})}\n\n"
 
-            # 2. فحص وجود ملف PDF أو DOCX أو HTML في الرد لفتحه في الـ Right Side Panel
             art_match = re.search(r"```artifact:(pdf|docx|html):([^\n]+)\n([\s\S]*?)```", full_reply)
             if art_match:
                 art_type = art_match.group(1).strip()
