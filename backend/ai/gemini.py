@@ -8,7 +8,7 @@ import urllib.request
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from ai.prompts import AURELIUS_SYSTEM_PROMPT
+from ai.prompts import AURELIUS_SYSTEM_PROMPT, inject_language_instruction
 
 load_dotenv()
 
@@ -17,7 +17,6 @@ _client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 TEMPERATURE = 0.4
 MAX_RETRIES = 1
 
-# الموديلات الموجودة فعلياً في حسابك مرتبة من الأسرع والأخف للأقوى
 MODE_CONFIGS = {
     "low": {
         "models": ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash"],
@@ -34,10 +33,13 @@ MODE_CONFIGS = {
 }
 
 
-def build_config(mode: str, model_name: str) -> dict:
+def build_config(mode: str, model_name: str, system_prompt: str) -> dict:
+    """
+    بناء config مع الـ system prompt الديناميكي (اللي فيه language injection).
+    """
     settings = MODE_CONFIGS.get(mode, MODE_CONFIGS["low"])
     config = {
-        "system_instruction": AURELIUS_SYSTEM_PROMPT,
+        "system_instruction": system_prompt,   # ← هنا بنبعت الـ prompt المعدّل
         "temperature": TEMPERATURE,
     }
     if "lite" not in model_name and settings["thinking_budget"] is not None:
@@ -75,7 +77,6 @@ def build_contents(history_rows: list[tuple], attachment: dict | None = None) ->
 
 
 def _crop_watermark_bottom(img_bytes: bytes, crop_px: int = 48) -> bytes:
-    """قص شريط العلامة المائية السفلي من الصورة وإرجاعها كـ PNG نظيف"""
     try:
         with Image.open(io.BytesIO(img_bytes)) as im:
             w, h = im.size
@@ -94,7 +95,6 @@ def generate_or_edit_image(
     source_image_bytes: bytes | None = None,
     mime_type: str = "image/png"
 ) -> str | None:
-    """توليد وتعديل الصور بدون علامة مائية"""
     for img_model in ["gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-2.5-flash-image"]:
         try:
             req_contents = [prompt]
@@ -134,8 +134,13 @@ def generate_or_edit_image(
 
     return None
 
+
 def ask_aurelius(history_rows: list[tuple], mode: str = "low", attachment: dict | None = None) -> str:
     candidate_models = MODE_CONFIGS.get(mode, MODE_CONFIGS["low"])["models"]
+
+    # ← الحل الأساسي: inject language instruction بناءً على آخر رسالة
+    dynamic_system_prompt = inject_language_instruction(history_rows)
+
     trimmed = list(history_rows[-10:])
     while trimmed and trimmed[0][1] != "user":
         trimmed.pop(0)
@@ -144,7 +149,7 @@ def ask_aurelius(history_rows: list[tuple], mode: str = "low", attachment: dict 
     last_error = None
 
     for model_name in candidate_models:
-        config = build_config(mode, model_name)
+        config = build_config(mode, model_name, dynamic_system_prompt)
         for attempt in range(MAX_RETRIES):
             try:
                 response = _client.models.generate_content(
@@ -167,6 +172,10 @@ def ask_aurelius(history_rows: list[tuple], mode: str = "low", attachment: dict 
 
 def stream_aurelius(history_rows: list[tuple], mode: str = "low", attachment: dict | None = None):
     candidate_models = MODE_CONFIGS.get(mode, MODE_CONFIGS["low"])["models"]
+
+    # ← الحل الأساسي: inject language instruction بناءً على آخر رسالة
+    dynamic_system_prompt = inject_language_instruction(history_rows)
+
     trimmed = list(history_rows[-10:])
     while trimmed and trimmed[0][1] != "user":
         trimmed.pop(0)
@@ -175,10 +184,10 @@ def stream_aurelius(history_rows: list[tuple], mode: str = "low", attachment: di
     last_error = None
 
     for model_name in candidate_models:
-        config = build_config(mode, model_name)
+        config = build_config(mode, model_name, dynamic_system_prompt)
         for attempt in range(MAX_RETRIES):
             try:
-                print(f"[Aurelius] Trying model: {model_name}")
+                print(f"[Aurelius] Trying model: {model_name} | lang_injected=True")
                 response = _client.models.generate_content_stream(
                     model=model_name,
                     contents=contents,
