@@ -1,6 +1,6 @@
 "use strict";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://aurelius-backend-brown.vercel.app";
 
 /* ============================================================
    AVATAR PRESETS & ANIMATED FRAMES (STORED IN DATABASE)
