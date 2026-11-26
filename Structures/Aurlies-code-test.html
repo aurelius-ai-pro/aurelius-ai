@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤشر الأسعار في مصر - رصد التخفيضات</title>
+    <!-- استيراد خط عربي جميل (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .alert-box {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-right: 5px solid #28a745;
+            font-weight: 600;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background-color: #e9ecef;
+            padding: 1rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .price-info {
+            margin-bottom: 1rem;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 1rem;
+        }
+        .new-price {
+            color: #28a745;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .update-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            padding-top: 0.8rem;
+            margin-top: 1rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>رصد أسعار السلع في مصر 📉</h1>
+        <p>تابع معنا أحدث الانخفاضات والتخفيضات في الأسواق المصرية لحظة بلحظة</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- شريط تنبيهات -->
+        <div class="alert-box">
+            🔔 خبر عاجل: رصد تراجع في أسعار بعض السلع الغذائية الأساسية ومواد البناء في الأسواق اليوم.
+        </div>
+
+        <!-- شبكة المنتجات/السلع -->
+        <div class="grid">
+            
+            <!-- سلعة 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <span>حديد التسليح (الطن)</span>
+                    <span class="badge">هبوط 12%</span>
+                </div>
+                <div class="card-body">
+                    <div class="price-info">
+                        <span class="old-price">45,000 ج.م</span>
+                        <span class="new-price">39,500 ج.م</span>
+                    </div>
+                    <p>انخفاض ملحوظ في أسعار الحديد بعد تراجع سعر الدولار في السوق الموازي واستقرار الإفراجات الجمركية.</p>
+                    <div class="update-date">آخر تحديث: منذ ساعتين</div>
+                </div>
+            </div>
+
+            <!-- سلعة 2 -->
+            <div class="card">
+                <div class="card-header">
+                    <span>زيت الطعام (لتر)</span>
+                    <span class="badge">هبوط 15%</span>
+                </div>
+                <div class="card-body">
+                    <div class="price-info">
+                        <span class="old-price">75 ج.م</span>
+                        <span class="new-price">63 ج.م</span>
+                    </div>
+                    <p>تراجع أسعار الزيوت النباتية والخليط في السلاسل التجارية الكبرى بالتنسيق مع مبادرات خفض الأسعار.</p>
+                    <div class="update-date">آخر تحديث: اليوم</div>
+                </div>
+            </div>
+
+            <!-- سلعة 3 -->
+            <div class="card">
+                <div class="card-header">
+                    <span>الأرز المحلي (كيلو)</span>
+                    <span class="badge">هبوط 10%</span>
+                </div>
+                <div class="card-body">
+                    <div class="price-info">
+                        <span class="old-price">35 ج.م</span>
+                        <span class="new-price">31 ج.م</span>
+                    </div>
+                    <p>وفرة في المعروض المحلي من المحصول الجديد أدت إلى هبوط تدريجي في سعر الكيلو للمستهلك.</p>
+                    <div class="update-date">آخر تحديث: أمس</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2024 - منصة متابعة الأسعار في مصر</p>
+    </footer>
+
+</body>
+</html>
+إيه اللي عملناه في الصفحة دي؟
+تصميم متجاوب (Responsive): يشتغل معاك كويس سواء فتحته من الموبايل أو اللاب توب.
+خط عربي أنيق: استخدمنا خط Cairo الشهير من جوجل عشان الكلام شكله يكون مريح للعين.
+بطاقات أسعار (Cards): كل سلعة ليها كارت بيوضح السعر القديم (مشطوب)، السعر الجديد (بالأخضر)، ونسبة التخفيض فوق على اليمين.
+إيه رأيك؟ تحب نضيف حاجات تاني زي زرار للبحث، أو نموذج لإدخال سلع جديدة؟
+
+طب الكود ده عايزه اخده كوبي مرة واحدة تعرف تسمحلي بكدة بضغطة زرار واحدة
+يا هلا بيك يا غالي! عيونى ليك، أسهل طريقة عشان تاخد الكود كله بضغطة زرار واحدة هي إنك تضغط على زرار "Copy" (نسخ) اللي بيظهر عاده في أعلى صندوق الكود هنا فوق ناحية اليمين (لو المتصفح بتاعك مدعوم)، أو تقدر تحدد وتنسخ من الصندوق الجاهز ده مباشرة:
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤشر الأسعار في مصر - رصد التخفيضات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .alert-box {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-right: 5px solid #28a745;
+            font-weight: 600;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background-color: #e9ecef;
+            padding: 1rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .price-info {
+            margin-bottom: 1rem;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 1rem;
+        }
+        .new-price {
+            color: #28a745;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .update-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            padding-top: 0.8rem;
+            margin-top: 1rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>رصد أسعار السلع في مصر 📉</h1>
+        <p>تابع معنا أحدث الانخفاضات والتخفيضات في الأسواق المصرية لحظة بلحظة</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="alert-box">
+            🔔 خبر عاجل: رصد تراجع في أسعار بعض السلع الغذائية الأساسية ومواد البناء في الأسواق اليوم.
+        </div>
+
+        <div class="grid">
+            
+            <div class="card">
+                <div class="card-header">
+                    <span>حديد التسليح (الطن)</span>
+                    <span class="badge">هبوط 12%</span>
+                </div>
+                <div class="card-body">
+                    <div class="price-info">
+                        <span class="old-price">45,000 ج.م</span>
+                        <span class="new-price">39,500 ج.م</span>
+                    </div>
+                    <p>انخفاض ملحوظ في أسعار الحديد بعد تراجع سعر الدولار في السوق الموازي واستقرار الإفراجات الجمركية.</p>
+                    <div class="update-date">آخر تحديث: منذ ساعتين</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>زيت الطعام (لتر)</span>
+                    <span class="badge">هبوط 15%</span>
+                </div>
+                <div class="card-body">
+                    <div class="price-info">
+                        <span class="old-price">75 ج.م</span>
+                        <span class="new-price">63 ج.م</span>
+                    </div>
+                    <p>تراجع أسعار الزيوت النباتية والخليط في السلاسل التجارية الكبرى بالتنسيق مع مبادرات خفض الأسعار.</p>
+                    <div class="update-date">آخر تحديث: اليوم</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>الأرز المحلي (كيلو)</span>
+                    <span class="badge">هبوط 10%</span>
+                </div>
+                <div class="card-body">
+                    <div class="price-info">
+                        <span class="old-price">35 ج.م</span>
+                        <span class="new-price">31 ج.م</span>
+                    </div>
+                    <p>وفرة في المعروض المحلي من المحصول الجديد أدت إلى هبوط تدريجي في سعر الكيلو للمستهلك.</p>
+                    <div class="update-date">آخر تحديث: أمس</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2024 - منصة متابعة الأسعار في مصر</p>
+    </footer>
+
+</body>
+</html>
